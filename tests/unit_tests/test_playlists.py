@@ -14,7 +14,7 @@ class TestPlaylists:
         playlist = Playlist("p1", "Mix", owner=owner)
         track = Track("t1", "Song", 120, "pop")
         playlist.add_track(track)
-        assert playlist.tracks == [track]
+        assert playlist.AlbumTrack == [track]
 
     def test_add_track_dedupes(self) -> None:
         owner = FreeUser("u1", "Owner", age=25)
@@ -22,7 +22,7 @@ class TestPlaylists:
         track = Track("t1", "Song", 120, "pop")
         playlist.add_track(track)
         playlist.add_track(track)
-        assert playlist.tracks == [track]
+        assert playlist.AlbumTrack == [track]
 
     def test_remove_track(self) -> None:
         owner = FreeUser("u1", "Owner", age=25)
@@ -30,7 +30,7 @@ class TestPlaylists:
         track = Track("t1", "Song", 120, "pop")
         playlist.add_track(track)
         playlist.remove_track("t1")
-        assert playlist.tracks == []
+        assert playlist.AlbumTrack == []
 
     def test_remove_track_noop_when_missing(self) -> None:
         owner = FreeUser("u1", "Owner", age=25)
@@ -38,7 +38,7 @@ class TestPlaylists:
         track = Track("t1", "Song", 120, "pop")
         playlist.add_track(track)
         playlist.remove_track("missing")
-        assert playlist.tracks == [track]
+        assert playlist.AlbumTrack == [track]
 
     def test_total_duration_seconds(self) -> None:
         owner = FreeUser("u1", "Owner", age=25)

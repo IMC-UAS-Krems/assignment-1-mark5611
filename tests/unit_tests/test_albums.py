@@ -26,7 +26,7 @@ class TestAlbums:
         t2 = AlbumTrack("t2", "B", 120, "pop", artist, track_number=1)
         album.add_track(t1)
         album.add_track(t2)
-        assert [t.track_id for t in album.tracks] == ["t2", "t1"]
+        assert [t.track_id for t in album.AlbumTrack] == ["t2", "t1"]
 
     def test_track_ids(self) -> None:
         artist = Artist("a1", "Artist", genre="pop")
@@ -56,4 +56,4 @@ class TestAlbums:
         album = Album("alb1", "Album", artist=artist, release_year=2024)
         t1 = AlbumTrack("t1", "A", 120, "pop", artist, track_number=3)
         album.add_track(t1)
-        assert album.tracks[0].track_number == 3
+        assert album.AlbumTrack[0].track_number == 3

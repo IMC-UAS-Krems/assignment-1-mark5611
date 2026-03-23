@@ -17,13 +17,12 @@ Run with:
     pytest tests/test_public.py -v
 """
 
-import pytest
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from streaming.platform import StreamingPlatform
-from streaming.users import FreeUser, PremiumUser, FamilyAccountUser, FamilyMember
+from streaming.users import FreeUser
 from streaming.playlists import CollaborativePlaylist
-from tests.conftest import FIXED_NOW, RECENT, OLD
+from tests.conftest import FIXED_NOW, RECENT
 
 
 # ===========================================================================
@@ -193,7 +192,7 @@ class TestTopArtistsByListeningTime:
 
     def test_returns_list_of_tuples(self, platform: StreamingPlatform) -> None:
         """Verify the method returns a list of (Artist, float) tuples."""
-        from streaming.artists import Artist
+        from streaming import Artist
         result = platform.top_artists_by_listening_time(n=3)
         assert isinstance(result, list)
         for item in result:
@@ -337,7 +336,7 @@ class TestUsersWhoCompletedAlbums:
 
     def test_returns_list_of_tuples(self, platform: StreamingPlatform) -> None:
         """Verify the method returns a list of (User, list) tuples."""
-        from streaming.users import User
+        from streaming import User
         result = platform.users_who_completed_albums()
         assert isinstance(result, list)
         for item in result:
