@@ -6,7 +6,6 @@ Implement the Album class for collections of AlbumTrack objects.
 Classes to implement:
   - Album
 """
-from streaming.tracks import AlbumTrack
 
 class Album:
     def __init__(self, album_id: str, title: str, artist, release_year: int):
@@ -16,8 +15,10 @@ class Album:
         self.release_year = release_year
         self.tracks = []
 
-    def add_track(self, track: AlbumTrack):
-        self.tracks.append(track)
+    def add_track(self, track):
+        AlbumTrack = track
+        insertAt = int(AlbumTrack.track_number)-1
+        self.tracks.insert(insertAt, track)
 
     def track_ids(self):
         track_ids = set()

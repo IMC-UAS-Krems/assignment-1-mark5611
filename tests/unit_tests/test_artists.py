@@ -31,5 +31,5 @@ class TestArtists:
         artist = Artist("a1", "Artist", genre="pop")
         track = Track("t1", "Song", 120, "pop")
         artist.add_track(track)
-        assert track in artist.AlbumTrack
+        assert track in artist.tracks
 

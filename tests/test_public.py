@@ -192,7 +192,7 @@ class TestTopArtistsByListeningTime:
 
     def test_returns_list_of_tuples(self, platform: StreamingPlatform) -> None:
         """Verify the method returns a list of (Artist, float) tuples."""
-        from streaming import Artist
+        from streaming.artists import Artist
         result = platform.top_artists_by_listening_time(n=3)
         assert isinstance(result, list)
         for item in result:
@@ -336,7 +336,7 @@ class TestUsersWhoCompletedAlbums:
 
     def test_returns_list_of_tuples(self, platform: StreamingPlatform) -> None:
         """Verify the method returns a list of (User, list) tuples."""
-        from streaming import User
+        from streaming.users import User
         result = platform.users_who_completed_albums()
         assert isinstance(result, list)
         for item in result:

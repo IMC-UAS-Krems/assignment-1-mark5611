@@ -35,8 +35,9 @@ class SingleRelease(Song):
         self.release_date = release_date
 
 class AlbumTrack(Song):
+    from streaming.albums import Album
     def __init__(self, track_id: str, title: str, duration_seconds: int, genre: str, artist: Artist, track_number: int,
-                 album=None):
+                 album: Album | None = None):
         super().__init__(artist, track_id, title, duration_seconds, genre)
         self.track_number = track_number
         self.album = album

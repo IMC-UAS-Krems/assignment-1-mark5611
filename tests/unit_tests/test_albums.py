@@ -1,3 +1,5 @@
+from locale import locale_alias
+
 from streaming.albums import Album
 from streaming.tracks import AlbumTrack
 from streaming.artists import Artist
@@ -15,18 +17,18 @@ class TestAlbums:
     def test_add_track_sets_album(self) -> None:
         artist = Artist("a1", "Artist", genre="pop")
         album = Album("alb1", "Album", artist=artist, release_year=2024)
-        track = AlbumTrack("t1", "Track", 120, "pop", artist, track_number=1)
+        track = AlbumTrack("t1", "Track", 120, "pop", artist, track_number=1, album=album)
         album.add_track(track)
         assert track.album is album
 
     def test_add_track_sorts_by_number(self) -> None:
         artist = Artist("a1", "Artist", genre="pop")
         album = Album("alb1", "Album", artist=artist, release_year=2024)
-        t1 = AlbumTrack("t1", "A", 120, "pop", artist, track_number=2)
-        t2 = AlbumTrack("t2", "B", 120, "pop", artist, track_number=1)
+        t1 = AlbumTrack("t1", "A", 120, "pop", artist, track_number=2, album=album)
+        t2 = AlbumTrack("t2", "B", 120, "pop", artist, track_number=1, album=album)
         album.add_track(t1)
         album.add_track(t2)
-        assert [t.track_id for t in album.AlbumTrack] == ["t2", "t1"]
+        assert [t.track_id for t in album.tracks] == ["t2", "t1"]
 
     def test_track_ids(self) -> None:
         artist = Artist("a1", "Artist", genre="pop")
@@ -56,4 +58,4 @@ class TestAlbums:
         album = Album("alb1", "Album", artist=artist, release_year=2024)
         t1 = AlbumTrack("t1", "A", 120, "pop", artist, track_number=3)
         album.add_track(t1)
-        assert album.AlbumTrack[0].track_number == 3
+        assert album.tracks[0].track_number == 3
