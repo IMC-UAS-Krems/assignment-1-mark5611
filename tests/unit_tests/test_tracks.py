@@ -34,13 +34,13 @@ class TestTracks:
 
     def test_song_stores_artist(self) -> None:
         artist = Artist("a1", "Artist", genre="pop")
-        song = Song("t1", "Song", 120, "pop", artist)
+        song = Song(track_id="t1", title="Song", duration_seconds=120, genre="pop", artist=artist)
         assert song.artist is artist
 
     def test_single_release_has_release_date(self) -> None:
         artist = Artist("a1", "Artist", genre="pop")
         release_date = date(2024, 1, 1)
-        single = SingleRelease("t1", "Single", 120, "pop", artist, release_date=release_date)
+        single = SingleRelease(track_id="t1", title="Single", duration_seconds=120, genre="pop", artist=artist, release_date=release_date)
         assert single.release_date == release_date
 
     def test_album_track_album_starts_none(self) -> None:
@@ -54,20 +54,20 @@ class TestTracks:
         assert track.track_number == 7
 
     def test_podcast_defaults(self) -> None:
-        pod = Podcast("p1", "Pod", 1800, "podcast", host="Host")
+        pod = Podcast(track_id="p1", title="Pod", duration_seconds=1800, genre="podcast", host="Host")
         assert pod.host == "Host"
         assert pod.description == ""
 
     def test_interview_episode_guest(self) -> None:
-        episode = InterviewEpisode("p1", "Ep", 1800, "podcast", host="H", guest="G")
+        episode = InterviewEpisode(track_id="p1", title="Ep", duration_seconds=1800, genre="podcast", host="H", guest="G")
         assert episode.guest == "G"
 
     def test_narrative_episode_details(self) -> None:
-        episode = NarrativeEpisode("p1", "Ep", 1800, "podcast", host="H", season=2, episode_number=4)
+        episode = NarrativeEpisode(track_id="p1", title="Ep", duration_seconds=1800, genre="podcast", host="H", season=2, episode_number=4)
         assert episode.season == 2
         assert episode.episode_number == 4
 
     def test_audiobook_track_details(self) -> None:
-        audio = AudiobookTrack("a1", "Chapter", 600, "audio", author="Auth", narrator="Narr")
+        audio = AudiobookTrack(track_id="a1", title="Chapter", duration_seconds=600, genre="audio", author="Auth", narrator="Narr")
         assert audio.author == "Auth"
         assert audio.narrator == "Narr"

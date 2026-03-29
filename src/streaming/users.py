@@ -17,14 +17,15 @@ class User:
 
     def __init__(self, user_id: str, name: str, age: int, session: Optional[List[ListeningSession]] = None):
         if session is None:
-            session = [ListeningSession]
+            session = []
         self.user_id = user_id
         self.name = name
         self.age = age
         self.sessions = session
 
     def add_session(self, session: ListeningSession):
-        self.sessions.append(session)
+        if session not in self.sessions:
+            self.sessions.append(session)
 
     def total_listening_seconds(self):
         tls = 0
@@ -40,7 +41,7 @@ class User:
         ut = []
         for session in self.sessions:
             if isinstance(session, ListeningSession):
-                ut.append(session.track)
+                ut.append(session.track.track_id)
         return set(ut)
 
 class FreeUser(User):
@@ -54,18 +55,20 @@ class PremiumUser(User):
         self.subscription_start = subscription_start
 
 class FamilyAccountUser(User):
-    def __init__(self, sub_users: list, user_id: str, name: str, age: int):
-        super().__init__(user_id, name, age, )
+    def __init__(self, user_id: str, name: str = None, age: int = None, sub_users: Optional[List[User]] = None):
+        super().__init__(user_id, name, age)
+        if sub_users is None:
+            sub_users = []
         self.sub_users = sub_users
 
     def add_sub_user(self, sub_user):
         self.sub_users.append(sub_user)
 
     def all_members(self):
-        return self.sub_users
+        return [self] + self.sub_users
 
 
 class FamilyMember(User):
-    def __init__(self, family_account_user: FamilyAccountUser, user_id: str, name: str, age: int):
+    def __init__(self, user_id: str, name: str, age: int, parent: FamilyAccountUser):
         super().__init__(user_id, name, age)
-        self.familyAccountUser = family_account_user
+        self.parent = parent
