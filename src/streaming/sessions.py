@@ -10,7 +10,7 @@ Classes to implement:
 from streaming.tracks import Track
 
 class ListeningSession:
-    def __init__(self, session_id: str, user, track: Track, timestamp, duration_listened_seconds: int):
+    def __init__(self, session_id: str, user, track, timestamp, duration_listened_seconds: int):
         self.session_id = session_id
         self.user = user
         self.track = track
