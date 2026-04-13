@@ -259,6 +259,8 @@ class StreamingPlatform:
 
     def users_who_completed_albums(self):
 
+        #unfinished
+
         final = []
 
         for key, user in self._users.items():
@@ -274,4 +276,5 @@ class StreamingPlatform:
                     albumtracks.add(track.track_id)
                 if albumtracks.issubset(users_tracks):
                     final.append(user)
+
         return final
