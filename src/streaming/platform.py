@@ -88,7 +88,7 @@ class StreamingPlatform:
         total_minutes = 0.0
 
         for session in self._sessions:
-            if start <= session.timestamp >= end:
+            if start <= session.timestamp <= end:
                 total_minutes += session.duration_listened_seconds / 60
 
         return total_minutes
@@ -116,7 +116,7 @@ class StreamingPlatform:
                 if session.timestamp >= max_back and session.user == Puser:
                     tracks.add(session.track)
 
-        return len(tracks)/all_tracks
+        return len(tracks)/len(premium_users)
 
 
 
@@ -126,12 +126,15 @@ class StreamingPlatform:
 
         tracks = {}
 
-        for session in self._sessions:
-            track = session.track
-            if track not in tracks.keys():
-                tracks[track] = 1
-            else:
-                tracks[track] += 1
+        for user in self._users:
+            unique_songs = set()
+            for session in user.sessions:
+                track = session.track
+                if track not in tracks.keys() and track not in unique_songs:
+                    tracks[track] = 1
+                elif track not in unique_songs:
+                    tracks[track] += 1
+                unique_songs.add(track)
 
         return sorted(tracks.items(),key= lambda x:x[1], reverse=False)[0][0]
 
@@ -143,7 +146,7 @@ class StreamingPlatform:
         total = 0
 
         for session in self._sessions:
-            user_type = session.user.__name__
+            user_type = type(session.user).name
             dur = session.duration_listened_seconds
             total += dur
             if user_type not in by_user_type.keys():
@@ -165,7 +168,6 @@ class StreamingPlatform:
 
     def top_artists_by_listening_time(self, n: int = 5):
         top_artists = {}
-        final = []
 
         for session in self._sessions:
             track = session.track
@@ -176,15 +178,13 @@ class StreamingPlatform:
                 else:
                     top_artists[artist] += session.duration_listened_seconds
 
-        for artist, listening_time in top_artists.items():
-            final.append((artist, listening_time))
+        top_artists = sorted(top_artists.items(),key= lambda x:x[1], reverse=False)
 
-        return final[:n]
+        return top_artists[:n]
 
     def user_top_genre(self, user_id: str):
 
         top_listen = {}
-        final = None
         total_time = 0
 
         if len(self._users) == 0:
@@ -209,7 +209,7 @@ class StreamingPlatform:
             return None
         else:
             final = (max(top_listen.items(), key=lambda x:x[1]))
-            return final[0], final[1] / total_time
+            return final[0], (final[1] / total_time)*100
 
 
 
@@ -218,7 +218,7 @@ class StreamingPlatform:
 
         for key, playlist in self._playlists.items():
             if isinstance(playlist, CollaborativePlaylist):
-                if len(playlist.contributors) >= threshold:
+                if len(playlist.contributors) > threshold:
                     playlistsl.append(playlist)
 
         return playlistsl
@@ -237,7 +237,7 @@ class StreamingPlatform:
         for key, playlist in self._playlists.items():
             tracks_num = len(playlist.tracks)
             if type(playlist) == Playlist:
-                playlist += 1
+                playlists += 1
                 by_playlists["Playlist"] += tracks_num
             elif isinstance(playlist, CollaborativePlaylist):
                 collabs += 1
@@ -263,18 +263,21 @@ class StreamingPlatform:
 
         final = []
 
+
         for key, user in self._users.items():
             users_tracks = set()
+            user_listened_albums = []
 
             for session in self._sessions:
                 if session.user == user:
-                    users_tracks.add(session.track)
+                    users_tracks.add(session.track.track_id)
 
             for key, album in self._albums.items():
-                albumtracks = set()
-                for track in album.tracks:
-                    albumtracks.add(track.track_id)
-                if albumtracks.issubset(users_tracks):
-                    final.append(user)
+                if album.tracks:
+                    albumTracks = set()
+                    for track in album.tracks:
+                        albumTracks.add(track.track_id)
+                    if albumTracks.issubset(users_tracks):
+                        final.append((user, user_listened_albums))
 
         return final
