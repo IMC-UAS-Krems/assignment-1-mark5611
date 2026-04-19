@@ -278,6 +278,7 @@ class StreamingPlatform:
                     for track in album.tracks:
                         albumTracks.add(track.track_id)
                     if albumTracks.issubset(users_tracks):
-                        final.append((user, user_listened_albums))
+                        user_listened_albums.append(album.album_id)
+            final.append((user, user_listened_albums))
 
         return final
